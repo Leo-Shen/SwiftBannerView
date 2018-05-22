@@ -31,6 +31,8 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     private var defaultModel : SwiftBannerModel?
     // 定时器
     private var bannerTimer : Timer?
+    // pageControl
+    private var pageControl : SwiftBannerPageControl?
     
     // 公开一个 bannerModel , 用于设置 banner的各种属性
     public var bannerModel : SwiftBannerModel? {
@@ -65,25 +67,73 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             if bannerModel?.placeHolder == nil {
                 bannerModel?.placeHolder = defaultModel?.placeHolder!
             }
+            
+            // pageControl
+            if bannerModel?.pageControlStyle == nil {
+                bannerModel?.pageControlStyle = defaultModel?.pageControlStyle!
+            }
+            
+            if bannerModel?.currentPageIndicatorTintColor == nil {
+                bannerModel?.currentPageIndicatorTintColor = defaultModel?.currentPageIndicatorTintColor!
+            }
+            
+            if bannerModel?.pageIndicatorTintColor == nil {
+                bannerModel?.pageIndicatorTintColor = defaultModel?.pageIndicatorTintColor!
+            }
+            
+            if bannerModel?.isNeedPageControl == false {
+                bannerModel?.isNeedPageControl = defaultModel?.isNeedPageControl!
+            }else{
+                pageControl?.isHidden = false
+            }
+            
+            if bannerModel?.pageControlImgArr == nil { // 系统
+                let bannerM = SwiftBannerModel()
+                bannerM.pageControlStyle = bannerModel?.pageControlStyle!
+                bannerM.pageIndicatorTintColor = bannerModel?.pageIndicatorTintColor!
+                bannerM.currentPageIndicatorTintColor = bannerModel?.currentPageIndicatorTintColor!
+                bannerM.currentPage = 0
+                bannerM.numberOfPages = ImageArr.count
+                pageControl?.bannerModel = bannerM
+            }else{ // 自定义
+                bannerModel?.numberOfPages = ImageArr.count
+                pageControl?.bannerModel = bannerModel
+            }
+            
+            
+            defaultModel = bannerModel
+            
+            if bannerModel?.isNeedCycle == true {
+                jumpToLocation()
+            }else{
+                kAccount = 1
+                jumpToLocation()
+                collectionView?.reloadData()
+            }
+            
         }
     }
     
     
     private var locationImageArr : NSMutableArray = [] {
         didSet{
+            ImageArr.removeAllObjects()
+            collectionView?.reloadData()
+            
             for image in locationImageArr {
                 let isImage : Bool = image is UIImage
                 assert(isImage, "\n **加载本地图片,LocationImgArr 内必须添加 图片(UIImage) ** \n")
-                self.ImageArr.add(image)
+                ImageArr.add(image)
             }
-            
-            // goto
-            
+            initPageAndJumpToLocation()
         }
     }
     
     private var networkImageArr : NSMutableArray = [] {
         didSet{
+            ImageArr.removeAllObjects()
+            collectionView?.reloadData()
+            
             for url in networkImageArr {
                 let isUrl : Bool = url is String
                 assert(isUrl, "\n **加载网络图片,NetWorkImgArr 内必须添加 图片URL的绝对路径** \n")
@@ -93,14 +143,33 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                     isHttpString = true
                 }
                 assert(isHttpString, "\n **加载网络图片,NetWorkImgArr 内必须添加 图片URL的绝对路径** \n")
-                self.ImageArr.add((url as! String))
+                ImageArr.add((url as! String))
             }
+            initPageAndJumpToLocation()
         }
     }
     
     private var blendImageArr : NSMutableArray = [] {
         didSet{
+            ImageArr.removeAllObjects()
+            collectionView?.reloadData()
             
+            for item in blendImageArr {
+                var isBlend : Bool = false
+                if item is UIImage {
+                    isBlend = true
+                }
+                
+                if item is String {
+                    if (item as! String).hasPrefix("http") {
+                        isBlend = true
+                    }
+                }
+                
+                assert(isBlend, "\n **加载混合图片,blendImgArr 内必须添加 图片URL的绝对路径 或者 图片(UIImage) ** \n");
+                ImageArr.add(item)
+            }
+            initPageAndJumpToLocation()
         }
     }
     
@@ -117,23 +186,37 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         fatalError("init(coder:) has not been implemented")
     }
     
-    class func bannerViewLocationImgArr(_ locationImgArr :NSMutableArray?,
-                                        bannerFrame frame :CGRect) -> SwiftBannerView {
+    class func bannerViewLocationImgArr(_ locationImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView {
+        
         let bannerView = SwiftBannerView(frame: frame)
         if locationImgArr?.count == 0 {
             return bannerView
         }
         bannerView.locationImageArr = locationImgArr?.mutableCopy() as! NSMutableArray
         return bannerView
+        
     }
     
-    class func bannerViewNetworkImgArr(_ networkImgArr :NSMutableArray?,bannerFrame frame :CGRect) -> SwiftBannerView{
+    class func bannerViewNetworkImgArr(_ networkImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView{
+        
         let bannerView = SwiftBannerView(frame: frame)
         if networkImgArr?.count == 0 {
             return bannerView
         }
         bannerView.networkImageArr = networkImgArr?.mutableCopy() as! NSMutableArray
         return bannerView
+        
+    }
+    
+    class func bannerViewBlendImgArr(_ blendImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView {
+        
+        let bannerView = SwiftBannerView(frame: frame)
+        if blendImgArr?.count == 0 {
+            return bannerView
+        }
+        bannerView.blendImageArr = blendImgArr?.mutableCopy() as! NSMutableArray
+        return bannerView
+        
     }
     
     private func initCollectionView(){
@@ -163,20 +246,48 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     private func initDefaultData(){
-        self.defaultModel    = SwiftBannerModel()
+        defaultModel = SwiftBannerModel()
         
-        self.defaultModel?.isNeedCycle = false
-        self.defaultModel?.isNeedTimerRun = false
-        self.defaultModel?.timeInterval = 1.5
-        self.defaultModel?.placeHolder = UIImage.init(named: "SwiftBannerViewSource.bundle/placeHolder.png")!
+        defaultModel?.isNeedCycle = false
+        defaultModel?.isNeedTimerRun = false
+        defaultModel?.timeInterval = 1.5
+        defaultModel?.placeHolder = UIImage.init(named: "SwiftBannerViewSource.bundle/placeHolder.png")!
+        
+        // pageControl
+        defaultModel?.isNeedPageControl = false
+        defaultModel?.currentPageIndicatorTintColor = UIColor.green
+        defaultModel?.pageIndicatorTintColor = UIColor.white
+        defaultModel?.pageControlStyle = .right
+        defaultModel?.currentPage = 0
+        
     }
     
-    private func jumpToLocation(){
-        guard self.ImageArr.count > 1 else {
+    private func initPageAndJumpToLocation(){
+        initPageControl()
+        jumpToLocation()
+    }
+    
+    private func initPageControl(){
+        if self.pageControl != nil {
             return
         }
         
-        var index : Int = self.ImageArr.count * kAccount / 2
+        if ImageArr.count == 1 {
+            return
+        }
+        
+        let pageControl = SwiftBannerPageControl.init(frame: CGRect(x: 0, y: self.height - 30, width: self.width, height: 30))
+        pageControl.isHidden = true
+        self.pageControl = pageControl
+        addSubview(pageControl)
+    }
+    
+    private func jumpToLocation(){
+        guard ImageArr.count > 1 else {
+            return
+        }
+        
+        var index : Int = ImageArr.count * kAccount / 2
         if self.bannerModel?.isNeedCycle == nil {
             index = 0
         }
@@ -185,10 +296,10 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(self.ImageArr.count == 1) {
+        if(ImageArr.count == 1) {
             return 1
         }else {
-            return self.ImageArr.count * kAccount
+            return ImageArr.count * kAccount
         }
     }
     
@@ -196,17 +307,18 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SwiftBannerViewCellID, for: indexPath)
         
-        self.collectionViewCell = cell as! SwiftBannerCollectioniewCell
+        collectionViewCell = cell as! SwiftBannerCollectioniewCell
         
-        let row : Int = indexPath.row % self.ImageArr.count
+        let row : Int = indexPath.row % ImageArr.count
         
-        if self.ImageArr[row] is String { // 如果是 字符串
-            if (self.ImageArr[row] as! String).hasPrefix("http") { // 如果是 url
-                self.collectionViewCell.url = self.ImageArr[row] as? String
+        if ImageArr[row] is String { // 如果是 字符串
+            if (ImageArr[row] as! String).hasPrefix("http") { // 如果是 url
+                collectionViewCell.placeHolder = bannerModel?.placeHolder
+                collectionViewCell.url = ImageArr[row] as? String
             }
         }else { // 如果不是字符串 : 是图片
-            if self.ImageArr[row] is UIImage { // 是图片
-                self.collectionViewCell.image = self.ImageArr[row] as? UIImage
+            if ImageArr[row] is UIImage { // 是图片
+                collectionViewCell.image = ImageArr[row] as? UIImage
             }
         }
         
@@ -214,7 +326,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let row : Int = indexPath.row % self.ImageArr.count
+        let row : Int = indexPath.row % ImageArr.count
         let cell = collectionView.cellForItem(at: indexPath)
         
         if let delegate = self.delegate {
@@ -223,7 +335,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     private func setupTimer(){
-        if self.ImageArr.count == 1 {
+        if ImageArr.count == 1 {
             return
         }
         
@@ -235,7 +347,9 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             removeTimer()
         }
         
-        let timer = Timer.init(timeInterval:(self.bannerModel?.timeInterval)!, target:self, selector: #selector(timeRun), userInfo: nil, repeats: true)
+        let timer = Timer(timeInterval: (self.bannerModel?.timeInterval)!, repeats: true) { [weak self] (timer) in
+            self?.timeRun()
+        }
         self.bannerTimer = timer
         
         RunLoop.current.add(timer, forMode: .commonModes)
@@ -248,19 +362,19 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     
     @objc private func timeRun(){
         
-        if self.ImageArr.count == 0 {
+        if ImageArr.count == 0 {
             return
         }
         
         var index = Int(((self.collectionView?.contentOffset.x)! / (self.layout?.itemSize.width)!)) + 1;
         
-        if index == self.ImageArr.count * kAccount || index == 0 {
+        if index == ImageArr.count * kAccount || index == 0 {
             
             guard kAccount != 1 else {
                 return
             }
             
-            index = self.ImageArr.count * kAccount / 2
+            index = ImageArr.count * kAccount / 2
             
             self.collectionView?.scrollToItem(at: IndexPath.init(item: index, section: 0), at: UICollectionViewScrollPosition.init(rawValue: 0), animated: false);
         }
@@ -268,7 +382,17 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+        let contentOffsetX : CGFloat = (scrollView.contentOffset.x + scrollView.width) / scrollView.width
+        autoreleasepool {
+            let arr : NSArray = "\(contentOffsetX)".components(separatedBy: ".") as NSArray
+            if arr.count == 2 {
+                let lastStr : String = arr.lastObject as! String
+                if lastStr == "0" {
+                    let index : Int = (Int(contentOffsetX) - 1) % ImageArr.count
+                    pageControl?.currentPage = index
+                }
+            }
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -277,5 +401,9 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         setupTimer()
+    }
+    
+    deinit {
+        print("SwiftBannerView -> deinit")
     }
 }

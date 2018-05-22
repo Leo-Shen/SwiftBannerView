@@ -46,6 +46,7 @@
 		799F2A7520AEDDB6006DD727 /* SwiftLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7420AEDDB6006DD727 /* SwiftLocationController.swift */; };
 		799F2A7720AEDDCA006DD727 /* SwiftNetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7620AEDDCA006DD727 /* SwiftNetworkController.swift */; };
 		799F2A7920AEDDDB006DD727 /* SwiftBlendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7820AEDDDB006DD727 /* SwiftBlendController.swift */; };
+		79DE157A20B3B2D3001417B2 /* SwiftBannerPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */; };
 		79F1C45F20B26A2F00C537EF /* SwiftFrame+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */; };
 		79F1C46120B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */; };
 /* End PBXBuildFile section */
@@ -114,6 +115,7 @@
 		799F2A7420AEDDB6006DD727 /* SwiftLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLocationController.swift; sourceTree = "<group>"; };
 		799F2A7620AEDDCA006DD727 /* SwiftNetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkController.swift; sourceTree = "<group>"; };
 		799F2A7820AEDDDB006DD727 /* SwiftBlendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBlendController.swift; sourceTree = "<group>"; };
+		79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerPageControl.swift; sourceTree = "<group>"; };
 		79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftFrame+Extension.swift"; sourceTree = "<group>"; };
 		79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerCollectioniewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -247,6 +249,7 @@
 				799F2A6F20AEDCBA006DD727 /* SwiftBannerView.swift */,
 				79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */,
 				7983F1A920B290AA00A83C2F /* SwiftBannerModel.swift */,
+				79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */,
 				79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */,
 				7983F1E020B2C7BF00A83C2F /* SwiftBannerViewSource.bundle */,
 			);
@@ -426,6 +429,7 @@
 				7983F1D320B2A59100A83C2F /* ImageProcessor.swift in Sources */,
 				7983F1CF20B2A59100A83C2F /* ImageCache.swift in Sources */,
 				7983F1D620B2A59100A83C2F /* Indicator.swift in Sources */,
+				79DE157A20B3B2D3001417B2 /* SwiftBannerPageControl.swift in Sources */,
 				7983F1AA20B290AA00A83C2F /* SwiftBannerModel.swift in Sources */,
 				7983F1D820B2A59100A83C2F /* KingfisherManager.swift in Sources */,
 				7983F1D520B2A59100A83C2F /* ImageView+Kingfisher.swift in Sources */,

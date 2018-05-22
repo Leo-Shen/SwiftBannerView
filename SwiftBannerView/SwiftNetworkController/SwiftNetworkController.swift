@@ -13,7 +13,6 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         let locationImArr = NSMutableArray()
         
         locationImArr.add("http://ww1.sinaimg.cn/mw690/9bbc284bgw1f9rk86nq06j20fa0a4whs.jpg")
@@ -30,12 +29,10 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         bannerModel.timeInterval = 1
         print("\(String(describing: bannerModel.placeHolder))")
         
-        
         let bannerView = SwiftBannerView.bannerViewNetworkImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 0, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel
         
         bannerView.delegate = self
         view.addSubview(bannerView)
-        
     }
 }

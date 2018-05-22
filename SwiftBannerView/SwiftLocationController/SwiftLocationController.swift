@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwiftLocationController: RootController ,SwiftBannerViewDelegate{
+class SwiftLocationController: RootController{
     
     
     override func viewDidLoad() {
@@ -27,13 +27,16 @@ class SwiftLocationController: RootController ,SwiftBannerViewDelegate{
         bannerModel.placeHolder = UIImage.init(named: "1")
         bannerModel.isNeedTimerRun  = true
         bannerModel.timeInterval = 1
-        print("\(String(describing: bannerModel.placeHolder))")
+        bannerModel.isNeedPageControl = true
+        bannerModel.isNeedCycle = true
+        
+        bannerModel.pageControlStyle = SwiftBannerPageControlStyle.middle
+        bannerModel.pageControlImgArr = [UIImage.init(named: "pageControlSelected1")!,UIImage.init(named: "pageControlUnSelected1")!]
         
         
         let bannerView = SwiftBannerView.bannerViewLocationImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 0, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel
         
-        bannerView.delegate = self
         view.addSubview(bannerView)
     }
     
