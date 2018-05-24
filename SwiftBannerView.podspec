@@ -5,7 +5,7 @@ s.version      = "1.0.0"
 s.summary      = "A lightweight cycle bannerView by Swift 4.0,dependency 'Kingfiser 4.8.0' "
 
 s.description  = <<-DESC
-                 A lightweight cycle bannerView by Swift 4.0,dependency 'Kingfiser 4.8.0'.It provides three types (location , network , blend ) "
+                 A lightweight cycle bannerView by Swift 4.0,dependency 'Kingfiser 4.8.0'.It provides three types include location , network and blend  "
 
                 DESC
 
