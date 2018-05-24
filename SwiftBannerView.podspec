@@ -30,7 +30,7 @@ s.source_files  = "SwiftBannerView/SwiftBannerView/**/*.{h,m}"
 
 
 s.requires_arc = true
-s.dependency "Kingfisher", "~> 4.8.0"
+s.dependency "Kingfisher", "~> 4.0.0"
 
 end
 
