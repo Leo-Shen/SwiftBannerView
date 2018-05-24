@@ -26,7 +26,7 @@ s.source       = { :git => "https://github.com/LuKane/SwiftBannerView.git", :tag
 
 s.source_files  = "SwiftBannerView/SwiftBannerView/*.swift"
 s.resource_bundles = {
-    'SwiftBannerView' => ['SwiftBannerView/SwiftBannerView.bundle/*.png']
+    'SwiftBannerView' => ['SwiftBannerView/SwiftBannerViewSource.bundle/*.png']
 }
 
 # s.exclude_files = "Classes/Exclude"
