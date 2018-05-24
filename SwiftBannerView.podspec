@@ -17,16 +17,16 @@ Pod::Spec.new do |s|
 
 s.name         = "SwiftBannerView"
 s.version      = "1.0.0"
-s.summary      = "cycle bannerView by Swift 4.0, use collectionView"
+s.summary      = "cycle bannerView by Swift 4.0"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
-s.description  = "无限循环轮播器:本地图片,网络图片,混合图片(本地&&网络),不定时更新"
+s.description  = "无限循环轮播器:本地图片,网络图片,混合图片(本地&&网络),依赖Kingfisher 4.8.0"
 
-s.homepage     = "https://github.com/LuKane"
+s.homepage     = "https://github.com/LuKane/SwiftBannerView"
 # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -38,7 +38,7 @@ s.homepage     = "https://github.com/LuKane"
 #
 
 # s.license      = "MIT"
-s.license      = { :type => "MIT", :file => "LICENSE" }
+# s.license      = { :type => "MIT", :file => "LICENSE" }
 
 
 # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -62,6 +62,7 @@ s.author             = { "LuKane" => "1169604556@qq.com" }
 #  the deployment target. You can optionally include the target after the platform.
 #
 
+s.swift_version = "4.0"
 # s.platform     = :ios
 s.platform     = :ios, "10.0"
 
