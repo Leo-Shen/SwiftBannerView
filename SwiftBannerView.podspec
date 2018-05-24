@@ -14,7 +14,7 @@ s.homepage     = "https://github.com/LuKane/SwiftBannerView"
 
 
 #s.license      = "MIT"
-s.license      = { :type => "MIT", :file => "LICENSE" }
+#s.license      = { :type => "MIT", :file => "LICENSE" }
 
 s.author             = { "LuKane" => "1169604556@qq.com" }
 # s.social_media_url   = "https://www.jianshu.com/u/335eb27959ed"
