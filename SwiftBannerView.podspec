@@ -13,7 +13,8 @@ s.homepage     = "https://github.com/LuKane/SwiftBannerView"
 # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
-s.license      = { :type => "MIT", :file => "LICENSE" }
+s.license      = "MIT"
+#s.license      = { :type => "MIT", :file => "LICENSE" }
 
 s.author             = { "LuKane" => "1169604556@qq.com" }
 # s.social_media_url   = "https://www.jianshu.com/u/335eb27959ed"
@@ -23,14 +24,17 @@ s.platform     = :ios, "10.0"
 
 s.source       = { :git => "https://github.com/LuKane/SwiftBannerView.git", :tag => s.version }
 
-s.source_files  = "SwiftBannerView/SwiftBannerView/**/*.swift"
+s.source_files  = "SwiftBannerView/SwiftBannerView/*.swift"
+s.resource_bundles = {
+    'SwiftBannerView' => ['SwiftBannerView/SwiftBannerView/*.png']
+}
+
 # s.exclude_files = "Classes/Exclude"
 
 # s.public_header_files = "Classes/**/*.h"
 
 
 s.requires_arc = true
-s.dependency "Kingfisher", "~> 4.1.0"
 
 end
 
