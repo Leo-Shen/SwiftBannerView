@@ -35,6 +35,7 @@ s.resource_bundles = {
 
 
 s.requires_arc = true
+s.dependency 'Kingfisher'
 
 end
 
