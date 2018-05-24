@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
 s.name         = "SwiftBannerView"
 s.version      = "1.0.0"
-s.summary      = "cycle bannerView by Swift 4.0, use collectionView,dependency 'Kingfisher'"
+s.summary      = "cycle bannerView by Swift 4.0, use collectionView"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -128,7 +128,7 @@ s.source_files  = "SwiftBannerView", "SwiftBannerView/SwiftBannerView/**/*.{h,m}
 s.requires_arc = true
 
 # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-s.dependency "Kingfisher", "~> 4.8.0"
+s.dependency "Kingfisher", "~> 4.0"
 
 end
 
