@@ -24,7 +24,7 @@ s.summary      = "cycle bannerView by Swift 4.0, use collectionView,dependency '
 #   * Try to keep it short, snappy and to the point.
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
-s.description  = "无限循环轮播器:本地图片,网络图片,混合图片(本地&&网络)"
+s.description  = "无限循环轮播器:本地图片,网络图片,混合图片(本地&&网络),不定时更新"
 
 s.homepage     = "https://github.com/LuKane"
 # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
