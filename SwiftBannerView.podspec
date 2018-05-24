@@ -23,7 +23,7 @@ s.platform     = :ios, "10.0"
 
 s.source       = { :git => "https://github.com/LuKane/SwiftBannerView.git", :tag => s.version }
 
-s.source_files  = "SwiftBannerView/SwiftBannerView/**/*.{h,m}"
+s.source_files  = "SwiftBannerView/SwiftBannerView/**/*.swift"
 # s.exclude_files = "Classes/Exclude"
 
 # s.public_header_files = "Classes/**/*.h"
