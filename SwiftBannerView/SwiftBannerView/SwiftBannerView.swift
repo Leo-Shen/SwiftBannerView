@@ -33,6 +33,8 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     private var bannerTimer : Timer?
     // pageControl
     private var pageControl : SwiftBannerPageControl?
+    // 文字的 控件
+    private var viewText : SwiftBannerViewText?
     
     // 公开一个 bannerModel , 用于设置 banner的各种属性
     public var bannerModel : SwiftBannerModel? {
@@ -100,7 +102,61 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                 pageControl?.bannerModel = bannerModel
             }
             
+            if bannerModel?.textChangeStyle == nil {
+                bannerModel?.textChangeStyle = defaultModel?.textChangeStyle
+            }
             
+            if bannerModel?.textShowStyle == nil {
+                bannerModel?.textShowStyle = defaultModel?.textShowStyle
+            }
+            
+            if bannerModel?.textColor == nil {
+                bannerModel?.textColor = defaultModel?.textColor
+            }
+            
+            if bannerModel?.textFont == nil {
+                bannerModel?.textFont = defaultModel?.textFont
+            }
+            
+            if bannerModel?.textBackGroundColor == nil {
+                bannerModel?.textBackGroundColor = defaultModel?.textBackGroundColor
+            }
+            
+            if bannerModel?.textBackGroundAlpha == nil {
+                bannerModel?.textBackGroundAlpha = defaultModel?.textBackGroundAlpha
+            }
+            
+            var isNeedText : Bool = false
+            if bannerModel?.textArr != nil {
+                if bannerModel?.textArr?.count == ImageArr.count {
+                    isNeedText = true
+                }
+                
+                switch bannerModel?.textChangeStyle {
+                    case .follow?: // 跟着一起跑
+                        bannerModel?.isNeedText = true
+                        break
+                    
+                    case .stay? : // 不动
+                        bannerModel?.isNeedText = false
+                        if isNeedText == true {
+                            if viewText == nil {
+                                initViewText()
+                            }
+                        }
+                        break
+                    
+                    default:
+                        break
+                }
+            }
+            
+            if isNeedText == true {
+                if bannerModel?.textHeight == nil {
+                    bannerModel?.textHeight = (defaultModel?.textHeight)!
+                }
+            }
+
             defaultModel = bannerModel
             
             if bannerModel?.isNeedCycle == true {
@@ -110,10 +166,8 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                 jumpToLocation()
                 collectionView?.reloadData()
             }
-            
         }
     }
-    
     
     private var locationImageArr : NSMutableArray = [] {
         didSet{
@@ -246,12 +300,13 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     private func initDefaultData(){
+        
         defaultModel = SwiftBannerModel()
         
         defaultModel?.isNeedCycle = false
         defaultModel?.isNeedTimerRun = false
         defaultModel?.timeInterval = 1.5
-        defaultModel?.placeHolder = UIImage.init(named: "SwiftBannerViewSource.bundle/placeHolder.png")!
+        defaultModel?.placeHolder = createImageWithUIColor(UIColor.lightText)
         
         // pageControl
         defaultModel?.isNeedPageControl = false
@@ -260,6 +315,19 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         defaultModel?.pageControlStyle = .right
         defaultModel?.currentPage = 0
         
+        // 文字
+        defaultModel?.textChangeStyle = .follow
+        defaultModel?.textShowStyle = .left
+        defaultModel?.textColor = UIColor.white
+        defaultModel?.textFont = UIFont(name: "Heiti SC", size: 15)
+        defaultModel?.textBackGroundColor = UIColor.black
+        defaultModel?.textBackGroundAlpha = 0.7
+        defaultModel?.textHeight = 30
+        
+        // 边距
+        defaultModel?.leftMargin = 0
+        // 圆角
+        defaultModel?.bannerCornerRadius = 0
     }
     
     private func initPageAndJumpToLocation(){
@@ -268,6 +336,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     private func initPageControl(){
+        
         if self.pageControl != nil {
             return
         }
@@ -280,6 +349,14 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         pageControl.isHidden = true
         self.pageControl = pageControl
         addSubview(pageControl)
+    }
+    
+    private func initViewText(){
+        let viewText : SwiftBannerViewText = SwiftBannerViewText(frame: CGRect(x: 0, y: self.height - (bannerModel?.textHeight)!, width: self.width, height: (bannerModel?.textHeight)!))
+        viewText.bannerM  = bannerModel
+        viewText.text = bannerModel?.textArr?.firstObject as? String
+        self.viewText = viewText
+        insertSubview(viewText, belowSubview: pageControl!)
     }
     
     private func jumpToLocation(){
@@ -322,6 +399,15 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             }
         }
         
+        if collectionViewCell.isSet != true {
+            collectionViewCell.isSet = true
+            collectionViewCell.bannerM = bannerModel
+        }
+        
+        if bannerModel?.textChangeStyle == .follow && bannerModel?.isNeedText == true {
+            collectionViewCell.text = bannerModel?.textArr![row] as? String
+        }
+        
         return cell
     }
     
@@ -339,25 +425,29 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             return
         }
         
-        if self.bannerModel?.isNeedTimerRun == false {
+        if bannerModel?.isNeedTimerRun == false {
             return
         }
         
-        if self.bannerTimer != nil {
+        if bannerModel?.timeInterval == nil || bannerModel?.timeInterval == 0 {
+            return
+        }
+        
+        if bannerTimer != nil {
             removeTimer()
         }
         
-        let timer = Timer(timeInterval: (self.bannerModel?.timeInterval)!, repeats: true) { [weak self] (timer) in
+        let timer = Timer(timeInterval: (bannerModel?.timeInterval)!, repeats: true) { [weak self] (timer) in
             self?.timeRun()
         }
-        self.bannerTimer = timer
+        bannerTimer = timer
         
         RunLoop.current.add(timer, forMode: .commonModes)
     }
     
     private func removeTimer(){
-        self.bannerTimer?.invalidate()
-        self.bannerTimer = nil
+        bannerTimer?.invalidate()
+        bannerTimer = nil
     }
     
     @objc private func timeRun(){
@@ -366,7 +456,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             return
         }
         
-        var index = Int(((self.collectionView?.contentOffset.x)! / (self.layout?.itemSize.width)!)) + 1;
+        var index = Int(((collectionView?.contentOffset.x)! / (layout?.itemSize.width)!)) + 1;
         
         if index == ImageArr.count * kAccount || index == 0 {
             
@@ -389,7 +479,14 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                 let lastStr : String = arr.lastObject as! String
                 if lastStr == "0" {
                     let index : Int = (Int(contentOffsetX) - 1) % ImageArr.count
-                    pageControl?.currentPage = index
+                    
+                    if viewText != nil && bannerModel?.textChangeStyle == .stay {
+                        viewText?.text = bannerModel?.textArr![index] as? String
+                    }
+                    
+                    if pageControl?.isHidden == false {
+                        pageControl?.currentPage = index
+                    }
                 }
             }
         }
@@ -401,6 +498,16 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         setupTimer()
+    }
+    
+    private func createImageWithUIColor(_ imageColor :UIColor) -> UIImage{
+        let rect = CGRect(x: 0, y: 0, width: 1.0, height: 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(imageColor.cgColor)
+        context?.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        return image!
     }
     
     deinit {

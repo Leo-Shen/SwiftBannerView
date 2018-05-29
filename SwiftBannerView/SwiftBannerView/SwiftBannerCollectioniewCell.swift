@@ -10,9 +10,9 @@ import UIKit
 import Kingfisher
 
 class SwiftBannerCollectioniewCell: UICollectionViewCell {
+    private var viewText : SwiftBannerViewText?
     // 占位图
     var placeHolder : UIImage?
-    
     // 网络图片 url
     var url : String? {
         didSet {
@@ -25,16 +25,35 @@ class SwiftBannerCollectioniewCell: UICollectionViewCell {
             }
         }
     }
-    
     // 本地图片
     var image : UIImage? {
         didSet {
             self.imageView?.image = image
         }
     }
-    
     // 当前图片的控件
     var imageView : UIImageView?
+    // 文字的变更
+    var text : String? {
+        didSet {
+            if viewText?.isHidden == false {
+                viewText?.text = text
+            }
+        }
+    }
+    // 当前模型 -> 来设置 ViewText 样式
+    var bannerM : SwiftBannerModel? {
+        didSet {
+            if bannerM?.isNeedText == true {
+                viewText?.isHidden = false
+                viewText?.bannerM = bannerM
+            }else{
+                viewText?.isHidden = true
+            }
+        }
+    }
+    // 是否设置过模型... 避免下次再设置
+    var isSet : Bool?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,11 +71,25 @@ class SwiftBannerCollectioniewCell: UICollectionViewCell {
         self.imageView = imageView
         addSubview(imageView)
         
+        let viewText : SwiftBannerViewText = SwiftBannerViewText()
+        self.viewText = viewText
+        addSubview(viewText)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageView?.frame = self.bounds
+        
+        if bannerM?.leftMargin != nil && bannerM?.leftMargin != 0 {
+            self.imageView?.frame = CGRect(x: (bannerM?.leftMargin)!, y: 0, width: self.width - 2 * (bannerM?.leftMargin)!, height: self.height)
+        }else{
+            self.imageView?.frame = self.bounds
+        }
+        
+        if bannerM?.bannerCornerRadius != nil && bannerM?.bannerCornerRadius != 0 {
+            self.imageView?.layer.cornerRadius = (bannerM?.bannerCornerRadius)!
+        }
+        if bannerM?.isNeedText == true {
+            viewText?.frame = CGRect(x: 0, y: self.height - (bannerM?.textHeight)!, width: self.width, height: (bannerM?.textHeight)!)
+        }
     }
-    
 }

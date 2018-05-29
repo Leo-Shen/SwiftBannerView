@@ -83,24 +83,24 @@ class SwiftBannerPageControl: UIView {
         super.layoutSubviews()
         
         switch bannerModel?.pageControlStyle {
-        case .left?:
-            let x1 : CGFloat = 10 - self.width / 2
-            let x2 : CGFloat = CGFloat((bannerModel?.numberOfPages)! * 5)
-            let x3 : CGFloat = CGFloat(((bannerModel?.numberOfPages)! - 1) / 2 * 5)
-            pageControl?.frame = CGRect(x: x1 + x2 + x3, y: 0, width: self.width, height: 30)
-            break
-        case .right?:
-            let x1 : CGFloat = self.width * 0.5
-            let x2 : CGFloat = CGFloat((bannerModel?.numberOfPages)! * 10)
-            let x3 : CGFloat = CGFloat(((bannerModel?.numberOfPages)! - 1) * 5)
-            let x4 : CGFloat = x1 - (x2 + x3) / 2 - 10
-            pageControl?.frame = CGRect(x: x4, y: 0, width: self.width, height: 30)
-            break
-        case .middle?:
-            pageControl?.frame = CGRect(x: 0, y: 0, width: self.width, height: 30)
-            break
-        default:
-            break
+            case .left?:
+                let x1 : CGFloat = 10 - self.width / 2
+                let x2 : CGFloat = CGFloat((bannerModel?.numberOfPages)! * 5)
+                let x3 : CGFloat = CGFloat(((bannerModel?.numberOfPages)! - 1) / 2 * 5)
+                pageControl?.frame = CGRect(x: x1 + x2 + x3, y: 0, width: self.width, height: 30)
+                break
+            case .right?:
+                let x1 : CGFloat = self.width * 0.5
+                let x2 : CGFloat = CGFloat((bannerModel?.numberOfPages)! * 10)
+                let x3 : CGFloat = CGFloat(((bannerModel?.numberOfPages)! - 1) * 5)
+                let x4 : CGFloat = x1 - (x2 + x3) / 2 - 10
+                pageControl?.frame = CGRect(x: x4, y: 0, width: self.width, height: 30)
+                break
+            case .middle?:
+                pageControl?.frame = CGRect(x: 0, y: 0, width: self.width, height: 30)
+                break
+            default:
+                break
         }
         
         if bannerModel?.pageControlImgArr != nil && bannerModel?.pageControlImgArr?.count != 0 {
@@ -109,17 +109,17 @@ class SwiftBannerPageControl: UIView {
             let width = CGFloat((bannerModel?.numberOfPages)!) * (image.size.width + 5)
             
             switch bannerModel?.pageControlStyle {
-            case .left?:
-                customControl?.frame = CGRect(x: 5, y: 0, width: width, height: 30)
-                break
-            case .middle?:
-                customControl?.frame = CGRect(x: (self.width - width) / 2, y: 0, width: width, height: 30)
-                break
-            case .right?:
-                customControl?.frame = CGRect(x: self.width - width - 5, y: 0, width: width, height: 30)
-                break
-            default:
-                break
+                case .left?:
+                    customControl?.frame = CGRect(x: 5, y: 0, width: width, height: 30)
+                    break
+                case .middle?:
+                    customControl?.frame = CGRect(x: (self.width - width) / 2, y: 0, width: width, height: 30)
+                    break
+                case .right?:
+                    customControl?.frame = CGRect(x: self.width - width - 5, y: 0, width: width, height: 30)
+                    break
+                default:
+                    break
             }
         }
     }

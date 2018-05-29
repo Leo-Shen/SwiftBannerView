@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		295A4552E3702C148D5F680D /* Pods_SwiftBannerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37EE44A70078B6B37D996B66 /* Pods_SwiftBannerView.framework */; };
+		793533F220BBE0CE0076D887 /* SwiftBannerViewText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793533F120BBE0CE0076D887 /* SwiftBannerViewText.swift */; };
 		7983F1AA20B290AA00A83C2F /* SwiftBannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7983F1A920B290AA00A83C2F /* SwiftBannerModel.swift */; };
-		7983F1E120B2C7BF00A83C2F /* SwiftBannerViewSource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7983F1E020B2C7BF00A83C2F /* SwiftBannerViewSource.bundle */; };
 		799F2A3F20AED366006DD727 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A3E20AED366006DD727 /* AppDelegate.swift */; };
 		799F2A4120AED366006DD727 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A4020AED366006DD727 /* ViewController.swift */; };
 		799F2A4420AED366006DD727 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 799F2A4220AED366006DD727 /* Main.storyboard */; };
@@ -47,8 +47,8 @@
 /* Begin PBXFileReference section */
 		37EE44A70078B6B37D996B66 /* Pods_SwiftBannerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftBannerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B52E079E73BF2B5F3074FBA /* Pods-SwiftBannerView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftBannerView.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftBannerView/Pods-SwiftBannerView.release.xcconfig"; sourceTree = "<group>"; };
+		793533F120BBE0CE0076D887 /* SwiftBannerViewText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerViewText.swift; sourceTree = "<group>"; };
 		7983F1A920B290AA00A83C2F /* SwiftBannerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerModel.swift; sourceTree = "<group>"; };
-		7983F1E020B2C7BF00A83C2F /* SwiftBannerViewSource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SwiftBannerViewSource.bundle; sourceTree = "<group>"; };
 		799F2A3B20AED366006DD727 /* SwiftBannerView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftBannerView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		799F2A3E20AED366006DD727 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		799F2A4020AED366006DD727 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -181,8 +181,8 @@
 				79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */,
 				7983F1A920B290AA00A83C2F /* SwiftBannerModel.swift */,
 				79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */,
+				793533F120BBE0CE0076D887 /* SwiftBannerViewText.swift */,
 				79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */,
-				7983F1E020B2C7BF00A83C2F /* SwiftBannerViewSource.bundle */,
 			);
 			path = SwiftBannerView;
 			sourceTree = "<group>";
@@ -323,7 +323,6 @@
 				799F2A4920AED366006DD727 /* LaunchScreen.storyboard in Resources */,
 				799F2A4620AED366006DD727 /* Assets.xcassets in Resources */,
 				799F2A4420AED366006DD727 /* Main.storyboard in Resources */,
-				7983F1E120B2C7BF00A83C2F /* SwiftBannerViewSource.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +393,7 @@
 				799F2A4120AED366006DD727 /* ViewController.swift in Sources */,
 				79F1C45F20B26A2F00C537EF /* SwiftFrame+Extension.swift in Sources */,
 				799F2A3F20AED366006DD727 /* AppDelegate.swift in Sources */,
+				793533F220BBE0CE0076D887 /* SwiftBannerViewText.swift in Sources */,
 				799F2A7020AEDCBA006DD727 /* SwiftBannerView.swift in Sources */,
 				799F2A6D20AED7D2006DD727 /* RootController.swift in Sources */,
 				79F1C46120B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift in Sources */,
