@@ -1,4 +1,12 @@
 # SwiftBannerView
+#### 要求 :
+* Kingfisher 4.0+
+* Swift 4.0 +
+* platform : iOS 10.0 +
+
+#### Object-c 版本
+[KNBannerView](https://github.com/LuKane/KNBannerView)
+
 #### 无限循环轮播器:
 * 本地图片
 * 网络图片
@@ -51,11 +59,11 @@ bannerModel.isNeedPageControl = true // 默认系统PageControl
 bannerModel.pageControlStyle = SwiftBannerPageControlStyle.middle // pageControl 居中
 ```
 
-### 5.1 让 BannerView 无限循环 (2018-1-11 日更新)
+### 5.1 让 BannerView 无限循环
 ```
 bannerModel.isNeedCycle = true // 让bannerView 无限循环, 默认 不循环
 ```
-### 5.2 BannerView 新增 左右边距 和 是否有圆角 (2018-05-04更新)
+### 5.2 BannerView 新增 左右边距 和 是否有圆角
 ```
 bannerModel.leftMargin = 10
 bannerModel.bannerCornerRadius = 8
