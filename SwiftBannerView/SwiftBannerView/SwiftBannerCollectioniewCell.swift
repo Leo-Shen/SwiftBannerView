@@ -5,6 +5,11 @@
 //  Created by LuKane on 2018/5/21.
 //  Copyright © 2018年 LuKane. All rights reserved.
 //
+/**
+ * 使用 SwiftBannerView的过程中,有任何bug或问题,都可以在github上提出 issue
+ * 或者 联系QQ: 1169604556
+ * Github: https://github.com/LuKane
+ */
 
 import UIKit
 import Kingfisher

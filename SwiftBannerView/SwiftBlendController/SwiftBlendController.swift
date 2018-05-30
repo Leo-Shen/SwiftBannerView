@@ -100,8 +100,8 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerModel.isNeedCycle = true // 需要 无限循环
         
         bannerModel.pageControlStyle = SwiftBannerPageControlStyle.middle // pageControl 居中
-        bannerModel.leftMargin = 10
-        bannerModel.bannerCornerRadius = 8
+        bannerModel.leftMargin = 10 // 左右边距
+        bannerModel.bannerCornerRadius = 8 // 圆角
         
         let bannerView = SwiftBannerView.bannerViewBlendImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 30 + 180 + 30 + 180, width: view.width, height: 180))
         bannerView.delegate = self

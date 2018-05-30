@@ -96,8 +96,8 @@ class SwiftLocationController: RootController , SwiftBannerViewDelegate{
         bannerModel.isNeedCycle = true // 需要 无限循环
         
         bannerModel.pageControlStyle = SwiftBannerPageControlStyle.middle // pageControl 居中
-        bannerModel.leftMargin = 10
-        bannerModel.bannerCornerRadius = 8
+        bannerModel.leftMargin = 10 // 左右边距
+        bannerModel.bannerCornerRadius = 8 // 圆角 
         
         let bannerView = SwiftBannerView.bannerViewLocationImgArr(locationImArr, bannerFrame: CGRect(x: 0, y:60 + 180 + 30 + 180, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel // 统一设置模型 来设置 banner的样式

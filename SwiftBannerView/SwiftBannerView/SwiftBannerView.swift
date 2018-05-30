@@ -5,38 +5,52 @@
 //  Created by LuKane on 2018/5/18.
 //  Copyright © 2018年 LuKane. All rights reserved.
 //
+/**
+ * 使用 SwiftBannerView的过程中,有任何bug或问题,都可以在github上提出 issue
+ * 或者 联系QQ: 1169604556
+ * Github: https://github.com/LuKane
+ */
 
 import UIKit
 
+/// SwiftBannerView 的代理
 @objc protocol SwiftBannerViewDelegate {
+    
+   /// SwiftBannerView 的点击事件
+   ///
+   /// - Parameters:
+   ///   - bannerView: 当前 banner
+   ///   - collectionView: 当前 collectionView
+   ///   - collectionViewCell: 当前 cell
+   ///   - index: 当前下标
    @objc optional func bannerView(_ bannerView :SwiftBannerView, collectionView :UICollectionView, collectionViewCell : SwiftBannerCollectioniewCell, didSelectItemAtIndexPath index :Int)
 }
 
 class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataSource {
     weak var delegate : SwiftBannerViewDelegate?
     
-    // 滚动图片的倍数
+    /// 滚动图片的倍数
     private var kAccount : Int = 100
-    // 流水布局的 layout
+    /// 流水布局的 layout
     private var layout : UICollectionViewFlowLayout?
-    // 设置 总的父控件
+    /// 设置 总的父控件
     private var collectionView : UICollectionView?
-    // Cell 的 指定字符串 : 缓存池获取
+    /// Cell 的 指定字符串 : 缓存池获取
     private let SwiftBannerViewCellID : String = "SwiftBannerViewCellID"
-    // collectionView 的 cell
+    /// collectionView 的 cell
     private var collectionViewCell : SwiftBannerCollectioniewCell!
-    // collectionView 的 '数据源' 数组
+    /// collectionView 的 '数据源' 数组
     private var ImageArr : NSMutableArray = NSMutableArray()
-    // 默认的 banner 数据 模型
+    /// 默认的 banner 数据 模型
     private var defaultModel : SwiftBannerModel?
-    // 定时器
+    /// 定时器
     private var bannerTimer : Timer?
-    // pageControl
+    /// pageControl
     private var pageControl : SwiftBannerPageControl?
-    // 文字的 控件
+    /// 文字的 控件
     private var viewText : SwiftBannerViewText?
     
-    // 公开一个 bannerModel , 用于设置 banner的各种属性
+    /// 公开一个 bannerModel , 用于设置 banner的各种属性
     public var bannerModel : SwiftBannerModel? {
         didSet{
             
@@ -75,20 +89,24 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                 bannerModel?.pageControlStyle = defaultModel?.pageControlStyle!
             }
             
+            // 当前 pageControl的颜色
             if bannerModel?.currentPageIndicatorTintColor == nil {
                 bannerModel?.currentPageIndicatorTintColor = defaultModel?.currentPageIndicatorTintColor!
             }
             
+            // 剩下 pageControl 的颜色
             if bannerModel?.pageIndicatorTintColor == nil {
                 bannerModel?.pageIndicatorTintColor = defaultModel?.pageIndicatorTintColor!
             }
             
+            // 是否需要 PageControl
             if bannerModel?.isNeedPageControl == false {
                 bannerModel?.isNeedPageControl = defaultModel?.isNeedPageControl!
             }else{
                 pageControl?.isHidden = false
             }
             
+            // 自定义pageControl 的图片
             if bannerModel?.pageControlImgArr == nil { // 系统
                 let bannerM = SwiftBannerModel()
                 bannerM.pageControlStyle = bannerModel?.pageControlStyle!
@@ -102,26 +120,32 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                 pageControl?.bannerModel = bannerModel
             }
             
+            // 文字的改变样式
             if bannerModel?.textChangeStyle == nil {
                 bannerModel?.textChangeStyle = defaultModel?.textChangeStyle
             }
             
+            // 文字的显示样式
             if bannerModel?.textShowStyle == nil {
                 bannerModel?.textShowStyle = defaultModel?.textShowStyle
             }
             
+            // 文字的颜色
             if bannerModel?.textColor == nil {
                 bannerModel?.textColor = defaultModel?.textColor
             }
             
+            // 文字的font
             if bannerModel?.textFont == nil {
                 bannerModel?.textFont = defaultModel?.textFont
             }
             
+            // 文字的父控件的背景颜色
             if bannerModel?.textBackGroundColor == nil {
                 bannerModel?.textBackGroundColor = defaultModel?.textBackGroundColor
             }
             
+            // 文字的父控件的背景透明度
             if bannerModel?.textBackGroundAlpha == nil {
                 bannerModel?.textBackGroundAlpha = defaultModel?.textBackGroundAlpha
             }
@@ -156,9 +180,10 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                     bannerModel?.textHeight = (defaultModel?.textHeight)!
                 }
             }
-
+            
             defaultModel = bannerModel
             
+            // 是否需要 无限循环
             if bannerModel?.isNeedCycle == true {
                 jumpToLocation()
             }else{
@@ -169,6 +194,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 重写 本地图片数组
     private var locationImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
@@ -183,6 +209,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 重写 网络图片数组
     private var networkImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
@@ -203,6 +230,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 重写 混合图片数组
     private var blendImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
@@ -227,6 +255,9 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 重写 initWithFrame
+    ///
+    /// - Parameter frame: frame
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -234,12 +265,18 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         initCollectionView()
         // 初始化 基本数据
         initDefaultData()
-        
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    /// 类方法创建 本地 图片轮播器
+    ///
+    /// - Parameters:
+    ///   - locationImgArr: 本地图片数组 (存放的都是图片)
+    ///   - frame: frame
+    /// - Returns: bannerView
     class func bannerViewLocationImgArr(_ locationImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView {
         
         let bannerView = SwiftBannerView(frame: frame)
@@ -248,9 +285,14 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
         bannerView.locationImageArr = locationImgArr?.mutableCopy() as! NSMutableArray
         return bannerView
-        
     }
     
+    /// 类方法创建 网络 图片轮播器
+    ///
+    /// - Parameters:
+    ///   - networkImgArr: 网络图片数组 (存放的都是 url)
+    ///   - frame: frame
+    /// - Returns: bannerView
     class func bannerViewNetworkImgArr(_ networkImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView{
         
         let bannerView = SwiftBannerView(frame: frame)
@@ -259,9 +301,14 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
         bannerView.networkImageArr = networkImgArr?.mutableCopy() as! NSMutableArray
         return bannerView
-        
     }
     
+    /// 类方法创建 混合 图片轮播器
+    ///
+    /// - Parameters:
+    ///   - blendImgArr: 混合图片数组 (存放的是 本地图片image 或者 url)
+    ///   - frame: frame
+    /// - Returns: bannerView
     class func bannerViewBlendImgArr(_ blendImgArr :NSMutableArray?, bannerFrame frame :CGRect) -> SwiftBannerView {
         
         let bannerView = SwiftBannerView(frame: frame)
@@ -270,9 +317,9 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
         bannerView.blendImageArr = blendImgArr?.mutableCopy() as! NSMutableArray
         return bannerView
-        
     }
     
+    /// 初始化 collectionView
     private func initCollectionView(){
         
         // 流水布局的 滚动基本属性
@@ -299,6 +346,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         addSubview(collectionView)
     }
     
+    /// 初始化 默认数据
     private func initDefaultData(){
         
         defaultModel = SwiftBannerModel()
@@ -330,11 +378,13 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         defaultModel?.bannerCornerRadius = 0
     }
     
+    /// 初始化 pageControl 以及跳转到指定位置
     private func initPageAndJumpToLocation(){
         initPageControl()
         jumpToLocation()
     }
     
+    /// 初始化 pageControl
     private func initPageControl(){
         
         if self.pageControl != nil {
@@ -351,6 +401,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         addSubview(pageControl)
     }
     
+    /// 初始化 .stay模型下的 文字父控件
     private func initViewText(){
         let viewText : SwiftBannerViewText = SwiftBannerViewText(frame: CGRect(x: 0, y: self.height - (bannerModel?.textHeight)!, width: self.width, height: (bannerModel?.textHeight)!))
         viewText.bannerM  = bannerModel
@@ -359,6 +410,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         insertSubview(viewText, belowSubview: pageControl!)
     }
     
+    /// 跳转到 指定位置
     private func jumpToLocation(){
         guard ImageArr.count > 1 else {
             return
@@ -420,6 +472,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 设置 timer
     private func setupTimer(){
         if ImageArr.count == 1 {
             return
@@ -445,11 +498,13 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         RunLoop.current.add(timer, forMode: .commonModes)
     }
     
+    /// 移除 timer
     private func removeTimer(){
         bannerTimer?.invalidate()
         bannerTimer = nil
     }
     
+    /// 定时器开始跑
     @objc private func timeRun(){
         
         if ImageArr.count == 0 {
@@ -500,6 +555,10 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         setupTimer()
     }
     
+    /// 通过颜色创建图片
+    ///
+    /// - Parameter imageColor: 图片颜色
+    /// - Returns: 图片
     private func createImageWithUIColor(_ imageColor :UIColor) -> UIImage{
         let rect = CGRect(x: 0, y: 0, width: 1.0, height: 1.0)
         UIGraphicsBeginImageContext(rect.size)
