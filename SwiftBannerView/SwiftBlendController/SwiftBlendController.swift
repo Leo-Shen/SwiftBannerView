@@ -76,7 +76,7 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerModel.textArr = self.textArr.copy() as? NSArray // 显示的文字
         bannerModel.textChangeStyle = .follow // 文字 的显示样式
         
-        let bannerView = SwiftBannerView.bannerViewBlendImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 60 + 180, width: view.width, height: 180))
+        let bannerView = SwiftBannerView.bannerViewBlendImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 30 + 180, width: view.width, height: 180))
         bannerView.delegate = self
         bannerView.tag = 1
         bannerView.bannerModel = bannerModel
@@ -103,7 +103,7 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerModel.leftMargin = 10
         bannerModel.bannerCornerRadius = 8
         
-        let bannerView = SwiftBannerView.bannerViewBlendImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 60 + 180 + 30 + 180, width: view.width, height: 180))
+        let bannerView = SwiftBannerView.bannerViewBlendImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 30 + 180 + 30 + 180, width: view.width, height: 180))
         bannerView.delegate = self
         bannerView.tag = 2
         bannerView.bannerModel = bannerModel
