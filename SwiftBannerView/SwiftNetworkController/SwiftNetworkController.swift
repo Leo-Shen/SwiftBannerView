@@ -10,14 +10,49 @@ import UIKit
 
 class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
 
+    var bannerView1 : SwiftBannerView?
+    var bannerView2 : SwiftBannerView?
+    var bannerView3 : SwiftBannerView?
+    
+    lazy var changeArr : NSMutableArray = { () -> NSMutableArray in
+        let changeArr : NSMutableArray = NSMutableArray()
+        
+        changeArr.add("http://ww4.sinaimg.cn/mw690/9bbc284bgw1fb29llpshkj20m80dwjt6.jpg")
+        changeArr.add("http://ww2.sinaimg.cn/mw690/9bbc284bgw1fb29lmpn6xj20ia0c5juf.jpg")
+        
+        return changeArr
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "网络图片"
         
+        setupNav()
+        
         setBannerView1()
         setBannerView2()
         setBannerView3()
+    }
+    
+    func setupNav(){
+        let rightBtn : UIButton = UIButton.init(type: .custom)
+        rightBtn.setTitleColor(UIColor.black, for: .normal)
+        rightBtn.setTitle("Change", for: .normal)
+        rightBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        rightBtn.frame = CGRect(x: 0, y: 0, width: 60, height: 30)
+        rightBtn.addTarget(self, action: #selector(rightBtnDidClick), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: rightBtn)
+    }
+    
+    @objc func rightBtnDidClick(){
+        bannerView1?.networkImageArr = changeArr.mutableCopy() as! NSMutableArray
+        bannerView2?.networkImageArr = changeArr.mutableCopy() as! NSMutableArray
+        bannerView3?.networkImageArr = changeArr.mutableCopy() as! NSMutableArray
         
+        bannerView1?.reloadData()
+        bannerView2?.reloadData()
+        bannerView3?.reloadData()
     }
     
     private func setBannerView1(){
@@ -44,9 +79,11 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         
         let bannerView = SwiftBannerView.bannerViewNetworkImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 30, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel // 统一形式来 设置模型
-        
         bannerView.delegate = self
         bannerView.tag = 0
+        
+        bannerView1 = bannerView
+        
         self.scrollView!.addSubview(bannerView)
     }
     
@@ -74,9 +111,11 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         
         let bannerView = SwiftBannerView.bannerViewNetworkImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 60 + 180, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel // 统一形式来 设置模型
-        
         bannerView.delegate = self
         bannerView.tag = 1
+        
+        bannerView2 = bannerView
+        
         self.scrollView!.addSubview(bannerView)
     }
     
@@ -101,9 +140,11 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         
         let bannerView = SwiftBannerView.bannerViewNetworkImgArr(locationImArr, bannerFrame: CGRect(x: 0, y: 60 + 180 + 30 + 180, width: view.width, height: 180))
         bannerView.bannerModel = bannerModel // 统一形式来 设置模型
-        
         bannerView.delegate = self
         bannerView.tag = 2
+        
+        bannerView3 = bannerView
+        
         self.scrollView!.addSubview(bannerView)
     }
     

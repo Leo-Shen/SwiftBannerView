@@ -10,12 +10,48 @@ import UIKit
 
 class SwiftBlendController: RootController , SwiftBannerViewDelegate{
 
+    var bannerView1 : SwiftBannerView?
+    var bannerView2 : SwiftBannerView?
+    var bannerView3 : SwiftBannerView?
+    
+    lazy var changeArr : NSMutableArray = { () -> NSMutableArray in
+        let changeArr : NSMutableArray = NSMutableArray()
+        
+        changeArr.add("http://ww4.sinaimg.cn/mw690/9bbc284bgw1fb29llpshkj20m80dwjt6.jpg")
+        changeArr.add(UIImage.init(named: "1")!)
+        
+        return changeArr
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "混合图片(网络 + 本地)"
+        
+        setupNav()
+        
         setBannerView1()
         setBannerView2()
         setBannerView3()
+    }
+    
+    func setupNav(){
+        let rightBtn : UIButton = UIButton.init(type: .custom)
+        rightBtn.setTitleColor(UIColor.black, for: .normal)
+        rightBtn.setTitle("Change", for: .normal)
+        rightBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        rightBtn.frame = CGRect(x: 0, y: 0, width: 60, height: 30)
+        rightBtn.addTarget(self, action: #selector(rightBtnDidClick), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: rightBtn)
+    }
+    
+    @objc func rightBtnDidClick(){
+        bannerView1?.blendImageArr = changeArr.mutableCopy() as! NSMutableArray
+        bannerView2?.blendImageArr = changeArr.mutableCopy() as! NSMutableArray
+        bannerView3?.blendImageArr = changeArr.mutableCopy() as! NSMutableArray
+        
+        bannerView1?.reloadData()
+        bannerView2?.reloadData()
+        bannerView3?.reloadData()
     }
     
     private func setBannerView1(){
@@ -44,6 +80,8 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerView.delegate = self
         bannerView.tag = 0
         bannerView.bannerModel = bannerModel
+        
+        bannerView1 = bannerView
         
         self.scrollView!.addSubview(bannerView)
     }
@@ -81,6 +119,8 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerView.tag = 1
         bannerView.bannerModel = bannerModel
         
+        bannerView2 = bannerView
+        
         self.scrollView!.addSubview(bannerView)
     }
     
@@ -107,6 +147,8 @@ class SwiftBlendController: RootController , SwiftBannerViewDelegate{
         bannerView.delegate = self
         bannerView.tag = 2
         bannerView.bannerModel = bannerModel
+        
+        bannerView3 = bannerView
         
         self.scrollView!.addSubview(bannerView)
     }

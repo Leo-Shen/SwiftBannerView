@@ -53,149 +53,162 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     /// 公开一个 bannerModel , 用于设置 banner的各种属性
     public var bannerModel : SwiftBannerModel? {
         didSet{
+            setBannerModel()
+        }
+    }
+    
+    private func setBannerModel(){
+        // 1.先移除定时器
+        removeTimer()
+        
+        // 需要定时器
+        if bannerModel?.isNeedTimerRun == true {
             
-            // 1.先移除定时器
-            removeTimer()
-            
-            // 需要定时器
-            if bannerModel?.isNeedTimerRun == true {
-
-                if bannerModel?.timeInterval != nil {
-                    if Double((bannerModel?.timeInterval)!) <= 0 {
-                        bannerModel?.timeInterval = defaultModel?.timeInterval
-                    }
-                }else{
+            if bannerModel?.timeInterval != nil {
+                if Double((bannerModel?.timeInterval)!) <= 0 {
                     bannerModel?.timeInterval = defaultModel?.timeInterval
                 }
-                setupTimer()
-            }
-            
-            // 需要循环播放
-            if bannerModel?.isNeedCycle == true {
-                jumpToLocation()
             }else{
-                kAccount = 1
-                jumpToLocation()
-                self.collectionView?.reloadData()
+                bannerModel?.timeInterval = defaultModel?.timeInterval
+            }
+            setupTimer()
+        }
+        
+        // 需要循环播放
+        if bannerModel?.isNeedCycle == true {
+            jumpToLocation()
+        }else{
+            kAccount = 1
+            jumpToLocation()
+            self.collectionView?.reloadData()
+        }
+        
+        // 是否有 占位图
+        if bannerModel?.placeHolder == nil {
+            bannerModel?.placeHolder = defaultModel?.placeHolder!
+        }
+        
+        // pageControl
+        if bannerModel?.pageControlStyle == nil {
+            bannerModel?.pageControlStyle = defaultModel?.pageControlStyle!
+        }
+        
+        // 当前 pageControl的颜色
+        if bannerModel?.currentPageIndicatorTintColor == nil {
+            bannerModel?.currentPageIndicatorTintColor = defaultModel?.currentPageIndicatorTintColor!
+        }
+        
+        // 剩下 pageControl 的颜色
+        if bannerModel?.pageIndicatorTintColor == nil {
+            bannerModel?.pageIndicatorTintColor = defaultModel?.pageIndicatorTintColor!
+        }
+        
+        // 是否需要 PageControl
+        if bannerModel?.isNeedPageControl == false {
+            bannerModel?.isNeedPageControl = defaultModel?.isNeedPageControl!
+        }else{
+            pageControl?.isHidden = false
+        }
+        
+        if bannerModel?.currentPage == nil {
+            bannerModel?.currentPage = defaultModel?.currentPage
+        }
+        
+        
+        // 自定义pageControl 的图片
+        if bannerModel?.pageControlImgArr == nil { // 系统
+            
+            let bannerM = SwiftBannerModel()
+            bannerM.pageControlStyle = bannerModel?.pageControlStyle!
+            bannerM.pageIndicatorTintColor = bannerModel?.pageIndicatorTintColor!
+            bannerM.currentPageIndicatorTintColor = bannerModel?.currentPageIndicatorTintColor!
+            bannerM.currentPage = bannerModel?.currentPage
+            bannerM.numberOfPages = ImageArr.count
+            pageControl?.bannerModel = bannerM
+        }else{ // 自定义
+            bannerModel?.numberOfPages = ImageArr.count
+            
+            if(bannerModel?.currentPage == nil ){
+                bannerModel?.currentPage = defaultModel?.currentPage
+            }
+            pageControl?.bannerModel = bannerModel
+        }
+        
+        // 文字的改变样式
+        if bannerModel?.textChangeStyle == nil {
+            bannerModel?.textChangeStyle = defaultModel?.textChangeStyle
+        }
+        
+        // 文字的显示样式
+        if bannerModel?.textShowStyle == nil {
+            bannerModel?.textShowStyle = defaultModel?.textShowStyle
+        }
+        
+        // 文字的颜色
+        if bannerModel?.textColor == nil {
+            bannerModel?.textColor = defaultModel?.textColor
+        }
+        
+        // 文字的font
+        if bannerModel?.textFont == nil {
+            bannerModel?.textFont = defaultModel?.textFont
+        }
+        
+        // 文字的父控件的背景颜色
+        if bannerModel?.textBackGroundColor == nil {
+            bannerModel?.textBackGroundColor = defaultModel?.textBackGroundColor
+        }
+        
+        // 文字的父控件的背景透明度
+        if bannerModel?.textBackGroundAlpha == nil {
+            bannerModel?.textBackGroundAlpha = defaultModel?.textBackGroundAlpha
+        }
+        
+        var isNeedText : Bool = false
+        if bannerModel?.textArr != nil {
+            if bannerModel?.textArr?.count == ImageArr.count {
+                isNeedText = true
             }
             
-            // 是否有 占位图
-            if bannerModel?.placeHolder == nil {
-                bannerModel?.placeHolder = defaultModel?.placeHolder!
-            }
-            
-            // pageControl
-            if bannerModel?.pageControlStyle == nil {
-                bannerModel?.pageControlStyle = defaultModel?.pageControlStyle!
-            }
-            
-            // 当前 pageControl的颜色
-            if bannerModel?.currentPageIndicatorTintColor == nil {
-                bannerModel?.currentPageIndicatorTintColor = defaultModel?.currentPageIndicatorTintColor!
-            }
-            
-            // 剩下 pageControl 的颜色
-            if bannerModel?.pageIndicatorTintColor == nil {
-                bannerModel?.pageIndicatorTintColor = defaultModel?.pageIndicatorTintColor!
-            }
-            
-            // 是否需要 PageControl
-            if bannerModel?.isNeedPageControl == false {
-                bannerModel?.isNeedPageControl = defaultModel?.isNeedPageControl!
-            }else{
-                pageControl?.isHidden = false
-            }
-            
-            // 自定义pageControl 的图片
-            if bannerModel?.pageControlImgArr == nil { // 系统
-                let bannerM = SwiftBannerModel()
-                bannerM.pageControlStyle = bannerModel?.pageControlStyle!
-                bannerM.pageIndicatorTintColor = bannerModel?.pageIndicatorTintColor!
-                bannerM.currentPageIndicatorTintColor = bannerModel?.currentPageIndicatorTintColor!
-                bannerM.currentPage = 0
-                bannerM.numberOfPages = ImageArr.count
-                pageControl?.bannerModel = bannerM
-            }else{ // 自定义
-                bannerModel?.numberOfPages = ImageArr.count
-                pageControl?.bannerModel = bannerModel
-            }
-            
-            // 文字的改变样式
-            if bannerModel?.textChangeStyle == nil {
-                bannerModel?.textChangeStyle = defaultModel?.textChangeStyle
-            }
-            
-            // 文字的显示样式
-            if bannerModel?.textShowStyle == nil {
-                bannerModel?.textShowStyle = defaultModel?.textShowStyle
-            }
-            
-            // 文字的颜色
-            if bannerModel?.textColor == nil {
-                bannerModel?.textColor = defaultModel?.textColor
-            }
-            
-            // 文字的font
-            if bannerModel?.textFont == nil {
-                bannerModel?.textFont = defaultModel?.textFont
-            }
-            
-            // 文字的父控件的背景颜色
-            if bannerModel?.textBackGroundColor == nil {
-                bannerModel?.textBackGroundColor = defaultModel?.textBackGroundColor
-            }
-            
-            // 文字的父控件的背景透明度
-            if bannerModel?.textBackGroundAlpha == nil {
-                bannerModel?.textBackGroundAlpha = defaultModel?.textBackGroundAlpha
-            }
-            
-            var isNeedText : Bool = false
-            if bannerModel?.textArr != nil {
-                if bannerModel?.textArr?.count == ImageArr.count {
-                    isNeedText = true
-                }
+            switch bannerModel?.textChangeStyle {
+            case .follow?: // 跟着一起跑
+                bannerModel?.isNeedText = true
+                break
                 
-                switch bannerModel?.textChangeStyle {
-                    case .follow?: // 跟着一起跑
-                        bannerModel?.isNeedText = true
-                        break
-                    
-                    case .stay? : // 不动
-                        bannerModel?.isNeedText = false
-                        if isNeedText == true {
-                            if viewText == nil {
-                                initViewText()
-                            }
-                        }
-                        break
-                    
-                    default:
-                        break
+            case .stay? : // 不动
+                bannerModel?.isNeedText = false
+                if isNeedText == true {
+                    if viewText == nil {
+                        initViewText()
+                    }
                 }
+                break
+                
+            default:
+                break
             }
-            
-            if isNeedText == true {
-                if bannerModel?.textHeight == nil {
-                    bannerModel?.textHeight = (defaultModel?.textHeight)!
-                }
+        }
+        
+        if isNeedText == true {
+            if bannerModel?.textHeight == nil {
+                bannerModel?.textHeight = (defaultModel?.textHeight)!
             }
-            
-            defaultModel = bannerModel
-            
-            // 是否需要 无限循环
-            if bannerModel?.isNeedCycle == true {
-                jumpToLocation()
-            }else{
-                kAccount = 1
-                jumpToLocation()
-                collectionView?.reloadData()
-            }
+        }
+        
+        defaultModel = bannerModel
+        
+        // 是否需要 无限循环
+        if bannerModel?.isNeedCycle == true {
+            jumpToLocation()
+        }else{
+            kAccount = 1
+            jumpToLocation()
+            collectionView?.reloadData()
         }
     }
     
     /// 重写 本地图片数组
-    private var locationImageArr : NSMutableArray = [] {
+    var locationImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
             collectionView?.reloadData()
@@ -210,7 +223,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     /// 重写 网络图片数组
-    private var networkImageArr : NSMutableArray = [] {
+    var networkImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
             collectionView?.reloadData()
@@ -231,7 +244,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     /// 重写 混合图片数组
-    private var blendImageArr : NSMutableArray = [] {
+    var blendImageArr : NSMutableArray = [] {
         didSet{
             ImageArr.removeAllObjects()
             collectionView?.reloadData()
@@ -253,6 +266,22 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             }
             initPageAndJumpToLocation()
         }
+    }
+    
+    /// 刷新 --> 提供做API 方法(切换banner的图片时候才调用的)
+    @objc public func reloadData(){
+        initDefaultData()
+        bannerModel?.numberOfPages = ImageArr.count
+        
+        initPageControl()
+        setBannerModel()
+        
+        if bannerModel?.isNeedPageControl == true {
+            pageControl?.isHidden = false
+        }
+        
+        pageControl?.bannerModel = bannerModel
+        collectionView?.reloadData()
     }
     
     /// 重写 initWithFrame
