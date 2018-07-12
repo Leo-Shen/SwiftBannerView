@@ -72,7 +72,7 @@ bannerModel.bannerCornerRadius = 8
 
 ### 5.3 BannerView 新增动态修改背景色功能
 ```
-[viewM setBgChangeColorArr:self.colorArr.copy];
+bannerM.bgChangeColorArr = self.colorArr.mutableCopy() as? NSArray
 ```
 
 ### 5.4 如果要对图片的url 和 背景色进行修改时 注意:
