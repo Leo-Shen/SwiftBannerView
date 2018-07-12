@@ -24,6 +24,8 @@ import UIKit
    ///   - collectionViewCell: 当前 cell
    ///   - index: 当前下标
    @objc optional func bannerView(_ bannerView :SwiftBannerView, collectionView :UICollectionView, collectionViewCell : SwiftBannerCollectioniewCell, didSelectItemAtIndexPath index :Int)
+    
+   @objc optional func bannerView(_ bannerView : SwiftBannerView,_ topColor : UIColor?, _ bottomColor : UIColor?,_ alpha : CGFloat,_ isRight : Bool)
 }
 
 class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataSource {
@@ -39,6 +41,8 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     private let SwiftBannerViewCellID : String = "SwiftBannerViewCellID"
     /// collectionView 的 cell
     private var collectionViewCell : SwiftBannerCollectioniewCell!
+    
+    private var collectionUseCell : SwiftBannerCollectioniewCell!
     /// collectionView 的 '数据源' 数组
     private var ImageArr : NSMutableArray = NSMutableArray()
     /// 默认的 banner 数据 模型
@@ -49,6 +53,10 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     private var pageControl : SwiftBannerPageControl?
     /// 文字的 控件
     private var viewText : SwiftBannerViewText?
+    // 第一次设置
+    private var _firstSet : Bool = false
+    // 滑动到中间时,偏移量
+    private var lastContentOffsetX : CGFloat?
     
     /// 公开一个 bannerModel , 用于设置 banner的各种属性
     public var bannerModel : SwiftBannerModel? {
@@ -268,6 +276,17 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         }
     }
     
+    /// 重写 修改背景色的数组
+    var changeColorArr : NSMutableArray = [] {
+        didSet {
+            if changeColorArr.count != 0 {
+                bannerModel?.bgChangeColorArr = NSMutableArray(array: changeColorArr)
+            }
+            _firstSet = false;
+            jumpToLocation()
+        }
+    }
+    
     /// 刷新 --> 提供做API 方法(切换banner的图片时候才调用的)
     @objc public func reloadData(){
         initDefaultData()
@@ -480,9 +499,20 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
             }
         }
         
+        if let Arr : NSMutableArray = bannerModel?.bgChangeColorArr as? NSMutableArray {
+            if Arr.count != 0 {
+                collectionViewCell.bgChangeColor = Arr[row] as? UIColor
+            }
+        }
+        
         if collectionViewCell.isSet != true {
             collectionViewCell.isSet = true
             collectionViewCell.bannerM = bannerModel
+        }
+        
+        if _firstSet == false {
+            _firstSet = true;
+            collectionUseCell = collectionViewCell
         }
         
         if bannerModel?.textChangeStyle == .follow && bannerModel?.isNeedText == true {
@@ -556,13 +586,22 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentOffsetX : CGFloat = (scrollView.contentOffset.x + scrollView.width) / scrollView.width
+        
+        let contentOffsetX : CGFloat = (CGFloat(Int(scrollView.contentOffset.x)) + scrollView.width) / scrollView.width
         autoreleasepool {
             let arr : NSArray = "\(contentOffsetX)".components(separatedBy: ".") as NSArray
+            
+            let cellArr : [SwiftBannerCollectioniewCell] = collectionView?.visibleCells as! [SwiftBannerCollectioniewCell]
+            
+            
             if arr.count == 2 {
                 let lastStr : String = arr.lastObject as! String
+                
                 if lastStr == "0" {
+                    
                     let index : Int = (Int(contentOffsetX) - 1) % ImageArr.count
+                    
+                    lastContentOffsetX = contentOffsetX
                     
                     if viewText != nil && bannerModel?.textChangeStyle == .stay {
                         viewText?.text = bannerModel?.textArr![index] as? String
@@ -570,6 +609,49 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
                     
                     if pageControl?.isHidden == false {
                         pageControl?.currentPage = index
+                    }
+                    
+                    let path : IndexPath = NSIndexPath(row: Int(scrollView.contentOffset.x / scrollView.frame.size.width), section: 0) as IndexPath
+                    collectionUseCell = collectionView?.cellForItem(at: path) as! SwiftBannerCollectioniewCell!
+                    
+                    if bannerModel?.bgChangeColorArr?.count != 0 {
+                        if let delegate = self.delegate {
+                            delegate.bannerView?(self, (bannerModel?.bgChangeColorArr![index])! as? UIColor, nil, 1.0, true)
+                        }
+                    }
+                    
+                }else{
+                    
+                    if let Arr : NSMutableArray = bannerModel?.bgChangeColorArr as? NSMutableArray {
+                        if Arr.count == 0 {
+                            return;
+                        }
+                    }
+                    
+                    if cellArr.count == 2 {
+                        
+                        var cell = cellArr[0] as SwiftBannerCollectioniewCell!
+                        if cell == collectionUseCell {
+                            cell = cellArr[1]
+                        }else{
+                            cell = cellArr[0]
+                        }
+                        
+                        let offSetX : String = "\(contentOffsetX)"
+                        if offSetX.contains(".") {
+                            var isRight = true
+                            if contentOffsetX < lastContentOffsetX! {
+                                isRight = true
+                            }else if contentOffsetX > lastContentOffsetX! {
+                                isRight = false
+                            }
+                            
+                            let alphaStr : String = "0." + offSetX.components(separatedBy: ".")[1]
+                            let alpha = CGFloat(Double(alphaStr)!)
+                            if let delegate = self.delegate {
+                                delegate.bannerView?(self, collectionUseCell.bgChangeColor, cell?.bgChangeColor, alpha, isRight)
+                            }
+                        }
                     }
                 }
             }

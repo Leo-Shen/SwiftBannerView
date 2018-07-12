@@ -22,6 +22,8 @@
 		799F2A7520AEDDB6006DD727 /* SwiftLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7420AEDDB6006DD727 /* SwiftLocationController.swift */; };
 		799F2A7720AEDDCA006DD727 /* SwiftNetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7620AEDDCA006DD727 /* SwiftNetworkController.swift */; };
 		799F2A7920AEDDDB006DD727 /* SwiftBlendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799F2A7820AEDDDB006DD727 /* SwiftBlendController.swift */; };
+		79A28E7C20F73E35003D8C2E /* SwiftBackGroundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A28E7B20F73E35003D8C2E /* SwiftBackGroundController.swift */; };
+		79A28E7E20F73F8B003D8C2E /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A28E7D20F73F8B003D8C2E /* UIColor+Extension.swift */; };
 		79DE157A20B3B2D3001417B2 /* SwiftBannerPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */; };
 		79F1C45F20B26A2F00C537EF /* SwiftFrame+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */; };
 		79F1C46120B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */; };
@@ -67,6 +69,8 @@
 		799F2A7420AEDDB6006DD727 /* SwiftLocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLocationController.swift; sourceTree = "<group>"; };
 		799F2A7620AEDDCA006DD727 /* SwiftNetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftNetworkController.swift; sourceTree = "<group>"; };
 		799F2A7820AEDDDB006DD727 /* SwiftBlendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBlendController.swift; sourceTree = "<group>"; };
+		79A28E7B20F73E35003D8C2E /* SwiftBackGroundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBackGroundController.swift; sourceTree = "<group>"; };
+		79A28E7D20F73F8B003D8C2E /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		79DE157920B3B2D3001417B2 /* SwiftBannerPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerPageControl.swift; sourceTree = "<group>"; };
 		79F1C45E20B26A2F00C537EF /* SwiftFrame+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftFrame+Extension.swift"; sourceTree = "<group>"; };
 		79F1C46020B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBannerCollectioniewCell.swift; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 				799F2A3E20AED366006DD727 /* AppDelegate.swift */,
 				799F2A6C20AED7D2006DD727 /* RootController.swift */,
 				799F2A4020AED366006DD727 /* ViewController.swift */,
+				79A28E7A20F73E02003D8C2E /* SwiftBackGround */,
 				799F2A7320AEDD98006DD727 /* SwiftLocationController */,
 				799F2A7220AEDD98006DD727 /* SwiftNetworkController */,
 				799F2A7120AEDD98006DD727 /* SwiftBlendController */,
@@ -209,6 +214,15 @@
 				799F2A7420AEDDB6006DD727 /* SwiftLocationController.swift */,
 			);
 			path = SwiftLocationController;
+			sourceTree = "<group>";
+		};
+		79A28E7A20F73E02003D8C2E /* SwiftBackGround */ = {
+			isa = PBXGroup;
+			children = (
+				79A28E7D20F73F8B003D8C2E /* UIColor+Extension.swift */,
+				79A28E7B20F73E35003D8C2E /* SwiftBackGroundController.swift */,
+			);
+			path = SwiftBackGround;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -393,9 +407,11 @@
 				799F2A4120AED366006DD727 /* ViewController.swift in Sources */,
 				79F1C45F20B26A2F00C537EF /* SwiftFrame+Extension.swift in Sources */,
 				799F2A3F20AED366006DD727 /* AppDelegate.swift in Sources */,
+				79A28E7E20F73F8B003D8C2E /* UIColor+Extension.swift in Sources */,
 				793533F220BBE0CE0076D887 /* SwiftBannerViewText.swift in Sources */,
 				799F2A7020AEDCBA006DD727 /* SwiftBannerView.swift in Sources */,
 				799F2A6D20AED7D2006DD727 /* RootController.swift in Sources */,
+				79A28E7C20F73E35003D8C2E /* SwiftBackGroundController.swift in Sources */,
 				79F1C46120B26C6D00C537EF /* SwiftBannerCollectioniewCell.swift in Sources */,
 				799F2A7920AEDDDB006DD727 /* SwiftBlendController.swift in Sources */,
 			);

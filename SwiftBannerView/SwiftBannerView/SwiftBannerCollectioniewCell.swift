@@ -59,6 +59,8 @@ class SwiftBannerCollectioniewCell: UICollectionViewCell {
     }
     // 是否设置过模型... 避免下次再设置
     var isSet : Bool?
+    // 做记录用的 
+    var bgChangeColor : UIColor?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -50,6 +50,8 @@ class SwiftBannerModel: NSObject {
     var leftMargin : CGFloat? // 默认 : 0
     // 周边 圆角  , 如果设置数值, 则有圆角大小
     var bannerCornerRadius : CGFloat? // 默认为 0
+    // 模仿 天猫 首页banner 动态修改背景色
+    var bgChangeColorArr : NSArray?
     
 /****************************** == pageControl == ********************************/
     

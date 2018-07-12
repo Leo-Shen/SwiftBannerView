@@ -31,8 +31,8 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         setupNav()
         
         setBannerView1()
-        setBannerView2()
-        setBannerView3()
+//        setBannerView2()
+//        setBannerView3()
     }
     
     func setupNav(){
@@ -67,7 +67,7 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         let bannerModel = SwiftBannerModel()
         
         bannerModel.placeHolder = UIImage.init(named: "1")
-        bannerModel.isNeedTimerRun  = true // 需要定时跑
+        bannerModel.isNeedTimerRun  = false // 需要定时跑
         bannerModel.timeInterval = 2 // 设置定时时间
         bannerModel.isNeedPageControl = true // 需要 pageControl
         bannerModel.isNeedCycle = true // 需要 无限循环
