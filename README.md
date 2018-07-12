@@ -12,7 +12,7 @@
 * 网络图片
 * 混合图片(本地&&网络)
 
-![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewNetWork.gif?raw=true)![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewlocate.gif?raw=true)![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewBlend.gif?raw=true)
+![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewNetWork.gif?raw=true)![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewlocate.gif?raw=true)![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewBlend.gif?raw=true)![image](https://github.com/LuKane/KNImageResource/blob/master/BannerView/BannerViewBackGround.gif?raw=true)
 
 ## 一.功能描述及要点
 - [x] 1.无限图片轮播器,加载 '本地图片' && '网络图片' && '本地和网络的混合图片'
@@ -24,6 +24,7 @@
 - [x] 7.设置描述文字的位置:(左,中,右) 以及字体颜色,大小,背景颜色,背景透明度
 - [x] 8.多张图片滚动时 文字的多种显示样式.单张图片时的样式
 - [x] 9.通过BannerModel的属性,左右边距 && 是否有圆角
+- [x] 10.新增 动态修改控制器的背景色 (2018/07/06日更新)
 
 ## 二.方法定义及调用
 ### 1.类方法创建BannerView:本地图片 || 网络图片 || 混合图片
@@ -69,6 +70,19 @@ bannerModel.leftMargin = 10
 bannerModel.bannerCornerRadius = 8
 ```
 
+### 5.3 BannerView 新增动态修改背景色功能
+```
+[viewM setBgChangeColorArr:self.colorArr.copy];
+```
+
+### 5.4 如果要对图片的url 和 背景色进行修改时 注意:
+```
+// 重要重要重要 : 若要设置 背景色 ,必须写在 图片数组的前面
+_bannerView1.changeColorArr = self.changeColorArr.mutableCopy;
+_bannerView1.netWorkImgArr = [self.changeArr mutableCopy];
+[_bannerView1 reloadData];
+```
+
 ### 6.设置bannerView 介绍文字的属性
 ```
 let bannerModel = SwiftBannerModel() // 统一通过 设置 模型来设置 里面的参数
@@ -82,3 +96,5 @@ bannerModel.textChangeStyle = .stay // 文字 的显示样式 // 设置文字展
 ##### 2>设代理 bannerView.delegate = self
 
 ##### 3>执行方法 func bannerView(_ bannerView: SwiftBannerView, collectionView: UICollectionView, collectionViewCell: SwiftBannerCollectioniewCell, didSelectItemAtIndexPath index: Int) 
+
+##### 4>滚动执行方法 - (void)bannerView:(KNBannerView *)bannerView topColor:(UIColor *)topColor bottomColor:(UIColor *)bottomColor alpha:(CGFloat)alpha isRight:(BOOL)isRight
