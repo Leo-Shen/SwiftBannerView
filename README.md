@@ -97,4 +97,4 @@ bannerModel.textChangeStyle = .stay // 文字 的显示样式 // 设置文字展
 
 ##### 3>执行方法 func bannerView(_ bannerView: SwiftBannerView, collectionView: UICollectionView, collectionViewCell: SwiftBannerCollectioniewCell, didSelectItemAtIndexPath index: Int) 
 
-##### 4>滚动执行方法 - (void)bannerView:(KNBannerView *)bannerView topColor:(UIColor *)topColor bottomColor:(UIColor *)bottomColor alpha:(CGFloat)alpha isRight:(BOOL)isRight
+##### 4>滚动执行方法 func bannerView(_ bannerView: SwiftBannerView, _ topColor: UIColor?, _ bottomColor: UIColor?, _ alpha: CGFloat, _ isRight: Bool)
