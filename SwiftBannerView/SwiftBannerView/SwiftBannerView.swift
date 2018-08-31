@@ -62,6 +62,14 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
     public var bannerModel : SwiftBannerModel? {
         didSet{
             setBannerModel()
+
+            if bannerModel?.bgChangeColorArr != nil {
+                if bannerModel?.bgChangeColorArr?.count == 1 {
+                    if let delegate = self.delegate {
+                        delegate.bannerView?(self, (bannerModel?.bgChangeColorArr![0])! as? UIColor, nil, 1, false)
+                    }
+                }
+            }
         }
     }
     
@@ -318,7 +326,6 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     /// 类方法创建 本地 图片轮播器
     ///
     /// - Parameters:
@@ -484,7 +491,7 @@ class SwiftBannerView: UIView , UICollectionViewDelegate , UICollectionViewDataS
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SwiftBannerViewCellID, for: indexPath)
         
-        collectionViewCell = cell as! SwiftBannerCollectioniewCell
+        collectionViewCell = cell as? SwiftBannerCollectioniewCell
         
         let row : Int = indexPath.row % ImageArr.count
         

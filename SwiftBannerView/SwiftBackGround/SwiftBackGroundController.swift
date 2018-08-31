@@ -84,12 +84,6 @@ class SwiftBackGroundController: RootController,SwiftBannerViewDelegate {
         self.bannerView1?.changeColorArr = self.changeColorArr.mutableCopy() as! NSMutableArray
         self.bannerView1?.networkImageArr = self.changeArr.mutableCopy() as! NSMutableArray
         self.bannerView1?.reloadData()
-        
-//        _bannerView1.changeColorArr = self.changeColorArr.mutableCopy;
-//
-//        _bannerView1.netWorkImgArr = [self.changeArr mutableCopy];
-//
-//        [_bannerView1 reloadData];
     }
     
     @objc func setupBannerView1(){
