@@ -35,7 +35,7 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         setBannerView3()
     }
     
-    func setupNav(){pageControl优化
+    func setupNav(){
         let rightBtn : UIButton = UIButton.init(type: .custom)
         rightBtn.setTitleColor(UIColor.black, for: .normal)
         rightBtn.setTitle("Change", for: .normal)
