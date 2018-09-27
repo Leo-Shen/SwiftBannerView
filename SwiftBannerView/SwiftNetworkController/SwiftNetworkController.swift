@@ -31,11 +31,11 @@ class SwiftNetworkController: RootController ,SwiftBannerViewDelegate {
         setupNav()
         
         setBannerView1()
-//        setBannerView2()
-//        setBannerView3()
+        setBannerView2()
+        setBannerView3()
     }
     
-    func setupNav(){
+    func setupNav(){pageControl优化
         let rightBtn : UIButton = UIButton.init(type: .custom)
         rightBtn.setTitleColor(UIColor.black, for: .normal)
         rightBtn.setTitle("Change", for: .normal)

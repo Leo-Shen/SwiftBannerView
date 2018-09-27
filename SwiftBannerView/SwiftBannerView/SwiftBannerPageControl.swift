@@ -136,6 +136,8 @@ private class SwiftBannerCustomPageControl : UIView {
         return layerArr
     }()
     
+    private var selectIndex : Int?
+    
     private var selectImg : UIImage?
     private var unselectImg : UIImage?
     
@@ -148,15 +150,36 @@ private class SwiftBannerCustomPageControl : UIView {
     
     public var currentPage : Int = 0 {
         didSet {
-            for i in 0..<layerArr.count {
-                let layer = layerArr[i] as! CALayer
-                layer.contents = self.unselectImg?.cgImage
-                if currentPage == i {
-                    if self.selectImg != nil {
-                        layer.contents = self.selectImg?.cgImage
-                    }
-                }
+            if self.layerArr.count == 0 {
+                return;
             }
+            
+            let layer = self.layerArr[self.selectIndex!] as! CALayer
+            layer.contents = self.unselectImg?.cgImage
+            
+            let layer1 = self.layerArr[currentPage] as! CALayer
+            layer1.contents = self.selectImg?.cgImage
+            
+            self.selectIndex = currentPage
+            
+//                if(self.layerArr.count == 0) return;
+//
+//                CALayer *layer = _layerArr[_selectIndex];
+//                [layer setContents:(__bridge id _Nullable)_unSelectImg.CGImage];
+//
+//                CALayer *layer1 = _layerArr[currentPage];
+//                [layer1 setContents:(__bridge id _Nullable)_selectImg.CGImage];
+//                _selectIndex = currentPage;
+            
+//            for i in 0..<layerArr.count {
+//                let layer = layerArr[i] as! CALayer
+//                layer.contents = self.unselectImg?.cgImage
+//                if currentPage == i {
+//                    if self.selectImg != nil {
+//                        layer.contents = self.selectImg?.cgImage
+//                    }
+//                }
+//            }
         }
     }
     
@@ -186,6 +209,7 @@ private class SwiftBannerCustomPageControl : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.selectIndex = 0
     }
     
     required init?(coder aDecoder: NSCoder) {
