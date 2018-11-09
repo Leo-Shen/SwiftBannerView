@@ -110,6 +110,11 @@ class SwiftBackGroundController: RootController,SwiftBannerViewDelegate {
     
     func bannerView(_ bannerView: SwiftBannerView, _ topColor: UIColor?, _ bottomColor: UIColor?, _ alpha: CGFloat, _ isRight: Bool) {
         
+        /* 当只有一张图片时, 禁止切换背景色 */
+//        if bannerView.networkImageArr.count <= 1 {
+//            return;
+//        }
+        
         if topColor != nil {
             self.topImageView?.backgroundColor = topColor
             
